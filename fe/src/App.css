@@ -1,0 +1,54 @@
+@import "tailwindcss";
+* {
+  font-family: Georgia, 'Times New Roman', Times, serif; /* Hoặc font bạn muốn */
+}
+
+
+footer{
+  min-height: 500px;
+  background-color: #000000;
+  margin: 30px 0px 0px;
+  padding: 60px 0px 0px;
+}
+#tong_footer1{
+  max-width: 1140px;
+  margin: 0 auto;
+}
+ul.vmenu{
+  padding: 0px 15px;
+  flex-wrap: wrap;
+  display: flex;
+
+}
+ul.vmenu .headline-footer a{
+  color: aliceblue;
+  font: 16pt;
+  margin: 0px 0px 20px;
+  padding: 0px 0px 10px;
+}
+ul.vmenu .vmenu-mini{
+  justify-content: space-between;
+  padding: 0px 15px;
+}
+ul.vmenu .vmenu-mini li {
+  margin: 10px 0px;
+
+}
+.vmenu .headline-footer a{
+  text-decoration: none;
+  
+}
+ul.vmenu li a{
+  text-decoration: none;
+  margin: 10px 0px;
+  font: 14pt; 
+  color: #555555;
+}
+.banner-footer img{
+  margin-right: 0px;
+}
+.action{
+  color: aliceblue;
+  font: 16px;
+  padding: 20px 0px 0px;
+}
