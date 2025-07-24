@@ -413,17 +413,17 @@ app.post("/register", (req, res) => {
 });
 
 // Search products by name
-app.get("/search", (req, res) => {
-  const searchTerm = req.query.q;
-  const searchQuery = "SELECT * FROM products WHERE name LIKE ?";
+app.get("/search", (req, res) =>{
+	const rawQuery = req.query.q;
+	if (!rawQuery || rawQuery.trim() === ""){
+		return res.status(400).json({ error: " Tu khoa tim kiem khong duoc bo trong."});
+	}
+	const searchTerm = req.query.q.toLowerCase();
+	const words = searchTerm.split("");
 
-  db.query(searchQuery, [`%${searchTerm}%`], (err, results) => {
-    if (err) {
-      return res.json({ error: err });
-    }
-    res.json({ products: results });
-  });
-});
+	let nameKeyword = "";
+	let price = null;
+}
 
 app.get("/orders", (req, res, next) => {
   const sql = `select o.*, u.email, u.username
