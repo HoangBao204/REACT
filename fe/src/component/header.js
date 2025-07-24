@@ -97,10 +97,16 @@ const Header = ({ userEmail, setUserEmail, role }) => {
 const handleKeyPress = (e) => {
   if (e.key === "Enter") {
     const cleanedTerm = searchTerm.toLowerCase().replace(/giá|dưới|khoảng/g, "").trim();
+    if (cleanedTerm === "") {
+      e.preventDefault();
+      setSearchDropdownVisible(false);
+      return;
+    }
     navigate(`/shop?search=${encodeURIComponent(cleanedTerm)}&page=1`);
     setSearchDropdownVisible(false);
   }
 };
+
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   const images = ["/img/v3.1.webp", "/img/v4.1.webp"];
