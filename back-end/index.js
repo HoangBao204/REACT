@@ -413,18 +413,57 @@ app.post("/register", (req, res) => {
 });
 
 // Search products by name
-app.get("/search", (req, res) =>{
-	const rawQuery = req.query.q;
-	if (!rawQuery || rawQuery.trim() === ""){
-		return res.status(400).json({ error: " Tu khoa tim kiem khong duoc bo trong."});
-	}
-	const searchTerm = req.query.q.toLowerCase();
-	const words = searchTerm.split("");
+app.get("/search", (req, res) => {
+  const rawQuery = req.query.q;
+   if (!rawQuery || rawQuery.trim() === "") {
+    return res.status(400).json({ error: "Từ khóa tìm kiếm không được để trống." });
+  }
+  const searchTerm = req.query.q.toLowerCase();
+  const words = searchTerm.split(" ");
 
-	let nameKeyword = "";
-	let price = null;
-}
+  let nameKeyword = "";
+  let price = null;
 
+  // Phân tích từ khóa
+  words.forEach((word, index) => {
+    // Tìm từ có số và k => xem là giá tiền
+    if (word.includes("k")) {
+      const num = parseInt(word.replace("k", "")) * 1000;
+      if (!isNaN(num)) {
+        price = num;
+      }
+    } else if (!isNaN(parseInt(word))) {
+      // Nếu chỉ là số không có "k"
+      price = parseInt(word);
+    } else {
+      nameKeyword += word + " ";
+    }
+  });
+
+
+  nameKeyword = nameKeyword.trim();
+
+// Tạo câu truy vấn SQL động
+  let query = "SELECT * FROM products WHERE 1";
+  const params = [];
+
+  if (nameKeyword) {
+    query += " AND name LIKE ?";
+    params.push(`%${nameKeyword}%`);
+  }
+
+  if (price !== null) {
+    query += " AND price <= ?";
+    params.push(price);
+  }
+
+  db.query(query, params, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Lỗi truy vấn", details: err });
+    }
+    res.json({ products: results });
+  });
+});
 app.get("/orders", (req, res, next) => {
   const sql = `select o.*, u.email, u.username
                         from orders as o
